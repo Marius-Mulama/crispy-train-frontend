@@ -10,7 +10,7 @@ function App() {
 
     <Router>
       <Header/> 
-      <div className='bg-gray-100 min-h-full'>
+      <div className='bg-gray-800 min-h-full'>
         <Routes>
           <Route path={"/"} element={<Welcome/>} />
           <Route path={"/login"} element={<Authentication bool={true} />}/>
