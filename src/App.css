@@ -36,12 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-html{
-  max-height:100vh;
-  overflow:hidden;
-}
-
-body {
-  height: 100%;
-}
