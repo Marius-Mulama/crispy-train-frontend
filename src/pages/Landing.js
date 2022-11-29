@@ -14,10 +14,10 @@ function Landing() {
 			</p>
 			<div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
 				<a href="/" className="px-8 py-3 text-lg font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Hire From Us</a>
-				<a href="/" className="px-8 py-3 text-lg font-semibold border rounded dark:border-gray-100">Apply For Jobs</a>
+				<a href="/signup" className="px-8 py-3 text-lg font-semibold border rounded dark:border-gray-100">Apply For Jobs</a>
 			</div>
 		</div>
-		<div className="flex justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 items-stretch">
+		<div className=" invisible lg:visible flex justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 items-stretch ">
 			<img src={business_svg} alt="" className="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128" />
 		</div>
 	</div>
