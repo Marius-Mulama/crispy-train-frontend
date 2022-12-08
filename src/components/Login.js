@@ -5,6 +5,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
   const check_blank = (args) => {
     let result = args.trim();
     if (result.length < 1) {
@@ -26,6 +27,15 @@ function Login() {
 
     e.preventDefault();
   };
+
+  //Handle social login
+  const google = ()=>{
+    window.open("http://localhost:8000/auth/google", "_self")
+  }
+
+  const github = ()=>{
+    console.log("github login")
+  }
 
 
   return (
@@ -98,10 +108,11 @@ function Login() {
           </p>
           <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
         </div>
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4" >
           <button
             aria-label="Log in with Google"
             className="p-3 rounded-sm hover:bg-blue-600"
+            onClick={google}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,6 +126,7 @@ function Login() {
           <button
             aria-label="Log in with GitHub"
             className="p-3 rounded-sm hover:bg-blue-600"
+            onClick={github}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
