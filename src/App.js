@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import Header from './components/Header';
 import Welcome from './pages/Welcome';
 import NotFound from './pages/NotFound';
+import ServerError from './pages/ServerError'
 import Authentication from './pages/Authentication';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -45,12 +46,13 @@ function App() {
   return (
     <Router>
       <Header user={user}/> 
-      <div className='bg-gray-800  dark:text-gray-100 h-screen px-8 py-5' >
+      <div className='bg-gray-800  dark:text-gray-100 h-screen' >
         <Routes>
           <Route path={"/"} element={user? <Home/> : <Welcome/>} />
           <Route path={"/login"} element={user ? <Navigate to="/" /> : <Authentication bool={true} />}/>
           <Route path={"/signup"} element={user ? <Navigate to="/" /> : <Authentication/>} />
           <Route path={"/profile"} element={<Profile user={user}/>} />
+          <Route path={"/500"} element={<ServerError/>} />
           <Route path={"*"} element={<NotFound/>} />
         </Routes>
       </div>
