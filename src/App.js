@@ -8,6 +8,8 @@ import Authentication from './pages/Authentication';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import { useEffect, useState } from 'react';
+// import User from './components/User';
+import AccountCard from './components/AccountCard';
 
 function App() {
 
@@ -46,12 +48,13 @@ function App() {
   return (
     <Router>
       <Header user={user}/> 
-      <div className='bg-gray-800  dark:text-gray-100 h-screen' >
+      <div className='bg-gray-800  dark:text-gray-100 h-full' >
         <Routes>
           <Route path={"/"} element={user? <Home/> : <Welcome/>} />
           <Route path={"/login"} element={user ? <Navigate to="/" /> : <Authentication bool={true} />}/>
           <Route path={"/signup"} element={user ? <Navigate to="/" /> : <Authentication/>} />
           <Route path={"/profile"} element={<Profile user={user}/>} />
+          <Route path={"/user"} element={<AccountCard/>} />
           <Route path={"/500"} element={<ServerError/>} />
           <Route path={"*"} element={<NotFound/>} />
         </Routes>
