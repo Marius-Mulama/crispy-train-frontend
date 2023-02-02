@@ -4,6 +4,7 @@ import Landing from './Landing'
 function Welcome() {
   return (
     <Landing/>
+
   )
 }
 

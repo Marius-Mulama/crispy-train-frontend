@@ -1,5 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Welcome from './pages/Welcome';
 import NotFound from './pages/NotFound';
@@ -47,7 +49,7 @@ function App() {
 
   return (
     <Router>
-      <Header user={user}/> 
+      <Header user={user}/>
       <div className='bg-gray-800  dark:text-gray-100 h-full' >
         <Routes>
           <Route path={"/"} element={user? <Home/> : <Welcome/>} />
@@ -59,6 +61,7 @@ function App() {
           <Route path={"*"} element={<NotFound/>} />
         </Routes>
       </div>
+      <ToastContainer theme="dark" />
     </Router>
 
   );

@@ -1,19 +1,59 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import SocialLogins from "./SocialLogins";
 import {check_blank} from "../utils/checks"
+import axios from "axios"
+import { redirect } from "react-router-dom";
+import Home from "../pages/Home";
 
-function Login() {
+function Login({user}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+
+  useEffect(()=>{
+    if(user){
+      // return <Redirect to="/home" />
+      return redirect(<Home/>)
+    }else{
+      console.log("Not Logged In")
+    }
+  })
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  (e) => {
     //Checks are done in the checks file in the utils directory
     //TO DO: Write api to handle form submission
 
-    if (check_blank(email) && check_blank(password)) {
-      console.log("Submited Succesfully");
+    if (check_blank(email) && check_blank(password)){
+      const credentials = JSON.stringify({
+        email:email,
+        password: password
+      });
+
+      console.log(credentials)
+
+      axios.post('http://localhost:8000/auth/login', credentials,{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response)=>{
+        console.log(response)
+        if (response.status === 200){
+          user.setUser(response.data) 
+
+        }
+      })
+      .catch((error)=>{
+        console.log("Login Error")
+        console.error(error)
+      }
+        
+      );
+
+
+      
     } else {
       console.error("Error Has been Seen")
     }
@@ -35,7 +75,7 @@ function Login() {
         >
           <div className="space-y-4">
             <div className="space-y-2">
-              <label for="email" className="block text-sm">
+              <label htmlFor="email" className="block text-sm">
                 Email address
               </label>
               <input
@@ -53,7 +93,7 @@ function Login() {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <label for="password" className="text-sm">
+                <label htmlFor="password" className="text-sm">
                   Password
                 </label>
               </div>

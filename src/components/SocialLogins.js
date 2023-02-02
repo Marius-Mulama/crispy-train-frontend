@@ -3,7 +3,9 @@ import React from 'react'
 function SocialLogins() {
       //Handle social login
   const google = ()=>{
-    window.open("http://localhost:8000/auth/google", "_self")
+   window.open("http://mariuslabs.com/auth/google", "_self")
+    // window.open("http://localhost:8000/auth/google", "_self")
+
   }
 
   const github = ()=>{
