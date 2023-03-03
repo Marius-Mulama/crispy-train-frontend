@@ -9,7 +9,7 @@ import ServerError from './pages/ServerError'
 import Authentication from './pages/Authentication';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 // import User from './components/User';
 import AccountCard from './components/AccountCard';
 import AddExperience from './components/AddExperience';
