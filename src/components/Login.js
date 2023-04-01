@@ -1,66 +1,97 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/no-redundant-roles */
 import { React, useEffect, useState } from "react";
 import SocialLogins from "./SocialLogins";
-import {check_blank} from "../utils/checks"
-import axios from "axios"
+import { check_blank } from "../utils/checks";
+import axios from "axios";
 import { redirect } from "react-router-dom";
 import Home from "../pages/Home";
+import { useCookies } from "react-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function Login({user}) {
+function Login({ user }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [cookies, setCookie] = useCookies(["user"]);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
-  useEffect(()=>{
-    if(user){
-      // return <Redirect to="/home" />
-      return redirect(<Home/>)
-    }else{
-      console.log("Not Logged In")
-    }
-  })
+  const handlePostRequest = async (creds) => {
+    try {
+      const result = await axios.post(
+        "http://tp-api.mariuslabs.com/auth/login",
+        creds,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      );
+
+      console.log(1)
+
+      console.log(result)
+
+      const responseCode = result.status;
+      const response = result.data;
+
+      console.log(2)
+
+      console.log(responseCode)
+
+      // if (responseCode == 403) {
+      //   console.log("Wrong Login Credentials");
+      // }
+      console.log(3)
 
 
-  const handleSubmit =  (e) => {
-    //Checks are done in the checks file in the utils directory
-    //TO DO: Write api to handle form submission
+      console.log(response);
+      console.log(response.message);
 
-    if (check_blank(email) && check_blank(password)){
-      const credentials = JSON.stringify({
-        email:email,
-        password: password
+      console.log(4)
+
+
+      //Store response in local storage
+      localStorage.setItem("accessToken", String(response.token));
+      localStorage.setItem("userData", JSON.stringify(response.result));
+
+      toast.success("Successfull Login", {
+        position: toast.POSITION.TOP_CENTER,
       });
 
-      console.log(credentials)
-
-      axios.post('http://localhost:8000/auth/login', credentials,{
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then((response)=>{
-        console.log(response)
-        if (response.status === 200){
-          user.setUser(response.data) 
-
-        }
-      })
-      .catch((error)=>{
-        console.log("Login Error")
-        console.error(error)
-      }
-        
-      );
+      // Set state with response data
+      setData(response);
+      setError(null);
+    } catch (error) {
+      // Handle error
+      setData(null);
+      setError(error.message);
 
 
       
+    }
+  };
+
+  const handleSubmit = (e) => {
+    //Checks are done in the checks file in the utils directory
+    if (check_blank(email) && check_blank(password)) {
+      const credentials = JSON.stringify({
+        email: email,
+        password: password,
+      });
+
+      console.log(credentials);
+
+      handlePostRequest(credentials);
     } else {
-      console.error("Error Has been Seen")
+      console.error("Error Has been Seen");
     }
 
     e.preventDefault();
   };
-
 
   return (
     <>
@@ -134,9 +165,8 @@ function Login({user}) {
         </div>
 
         {/* Add the social logins and the event handlers */}
-      
-        <SocialLogins/>
 
+        <SocialLogins />
 
         <p className="text-xs text-center sm:px-6 dark:text-gray-400">
           Don't have an account?
