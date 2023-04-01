@@ -13,10 +13,11 @@ import Profile from './pages/Profile';
 // import User from './components/User';
 import AccountCard from './components/AccountCard';
 import AddExperience from './components/AddExperience';
+import { useEffect,useState } from 'react';
 
 function App() {
 
-  // const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   // useEffect(()=>{
   //   const getUser = ()=>{
@@ -47,9 +48,17 @@ function App() {
   // },[])
 
   // setUser(true)
-  const user = true;
 
-  console.log(user)
+  useEffect(()=>{
+    const token = localStorage.getItem("accessToken")
+    const userData = localStorage.getItem("userData")
+
+    if(token && userData){
+      setUser(userData)
+    }
+  },[user])
+
+ // console.log(user)
 
   return (
     <Router>
