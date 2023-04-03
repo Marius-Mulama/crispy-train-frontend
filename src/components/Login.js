@@ -4,93 +4,78 @@ import { React, useEffect, useState } from "react";
 import SocialLogins from "./SocialLogins";
 import { check_blank } from "../utils/checks";
 import axios from "axios";
-import { redirect } from "react-router-dom";
+import { Navigate, redirect } from "react-router-dom";
 import Home from "../pages/Home";
-import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login({ user }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [cookies, setCookie] = useCookies(["user"]);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const handlePostRequest = async (creds) => {
-    try {
-      const result = await axios.post(
-        "http://tp-api.mariuslabs.com/auth/login",
-        creds,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Credentials": true,
-          },
-        }
-      );
+  const navigate = useNavigate();
 
-      console.log(1)
-
-      console.log(result)
-
-      const responseCode = result.status;
-      const response = result.data;
-
-      console.log(2)
-
-      console.log(responseCode)
-
-      // if (responseCode == 403) {
-      //   console.log("Wrong Login Credentials");
-      // }
-      console.log(3)
-
-
-      console.log(response);
-      console.log(response.message);
-
-      console.log(4)
-
-
-      //Store response in local storage
-      localStorage.setItem("accessToken", String(response.token));
-      localStorage.setItem("userData", JSON.stringify(response.result));
-
-      toast.success("Successfull Login", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-
-      // Set state with response data
-      setData(response);
-      setError(null);
-    } catch (error) {
-      // Handle error
-      setData(null);
-      setError(error.message);
-
-
-      
-    }
-  };
 
   const handleSubmit = (e) => {
     //Checks are done in the checks file in the utils directory
-    if (check_blank(email) && check_blank(password)) {
-      const credentials = JSON.stringify({
-        email: email,
-        password: password,
-      });
+    if (!check_blank(email) || !check_blank(password)) {
+      
 
-      console.log(credentials);
 
-      handlePostRequest(credentials);
-    } else {
-      console.error("Error Has been Seen");
-    }
+    }  
 
-    e.preventDefault();
+    const credentials = JSON.stringify({
+      email: email,
+      password: password,
+    });
+
+      axios
+        .post(
+          "http://tp-api.mariuslabs.com/auth/login",
+          //"http://localhost:8000/auth/login",
+          credentials,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+
+            toast.success("Successfull Login", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+
+            //Store response in local storage
+            localStorage.setItem("accessToken", String(response.data.token));
+            localStorage.setItem("userData", JSON.stringify(response.data.result));
+
+            navigate("/home")
+            window.location.reload(true)
+
+          } else {
+            toast.warning(response.data.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        })
+        .catch((Error) => {
+          toast.warning("Something occured while loggin in. Please try again", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+
+          
+        });
+
+         e.preventDefault();
+
   };
 
   return (
