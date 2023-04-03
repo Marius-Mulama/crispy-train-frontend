@@ -9,63 +9,33 @@ import ServerError from './pages/ServerError'
 import Authentication from './pages/Authentication';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-// import { useEffect, useState } from 'react';
-// import User from './components/User';
 import AccountCard from './components/AccountCard';
 import AddExperience from './components/AddExperience';
 import { useEffect,useState } from 'react';
 
 function App() {
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
-  // useEffect(()=>{
-  //   const getUser = ()=>{
-  //     fetch("http://localhost:8000/auth/login/success",{
-  //       method:"GET",
-  //       credentials:"include",
-  //       headers:{
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Credentials": true,
-  //       }
-  //     }).then(response=>{
-  //       console.log(1)
-  //       if(response.status === 200){
-  //         return response.json()
-  //       }else{
-  //         throw new Error("Authentication has failed")
-  //       }
-  //     }).then((resObject)=>{
-  //       console.log(2)
-  //       setUser(resObject.user)
-  //     }).catch((err)=>{
-  //       console.log(err)
-  //     })
-  //   }
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const userData = localStorage.getItem("userData");
 
-  //   getUser()
-  // },[])
-
-  // setUser(true)
-
-  useEffect(()=>{
-    const token = localStorage.getItem("accessToken")
-    const userData = localStorage.getItem("userData")
-
-    if(token && userData){
-      setUser(userData)
+    if (token && userData) {
+      setUser(true);
+    }else{
+      setUser(false)
     }
-  },[user])
+  },[]);
 
- // console.log(user)
 
   return (
     <Router>
       <Header user={user}/>
-      <div className='bg-gray-800  dark:text-gray-100 min-h-screen' >
+      {/* <div className='bg-gray-800  dark:text-gray-100 min-h-screen' > */}
         <Routes>
-          <Route path={"/"} element={user? <Home/> : <Welcome/>} />
+          <Route path="/" element={user ? <Navigate to="/home" /> : <Welcome />} />
+          <Route path="/home" element={user ? <Home />: <Navigate to="/" />} />
           <Route path={"/login"} element={user ? <Navigate to="/" /> : <Authentication bool={true} />}/>
           <Route path={"/signup"} element={user ? <Navigate to="/" /> : <Authentication/>} />
           <Route path={"/profile"} element={<Profile user={user}/>} />
@@ -74,7 +44,7 @@ function App() {
           <Route path={"/test"} element={<AddExperience/>} />
           <Route path={"*"} element={<NotFound/>} />
         </Routes>
-      </div>
+      {/* </div> */}
       <ToastContainer theme="dark" />
     </Router>
 
