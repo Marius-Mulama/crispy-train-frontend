@@ -3,9 +3,10 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
-    { name: 'About Us', href: '/', current: true },
-    { name: 'Link 1', href: '#', current: false },
-    { name: 'Link 2', href: '#', current: false },
+    { name: 'About', href: '/', current: true },
+    { name: 'Profile', href: '/profile', current: false },
+    { name: 'Jobs', href: '/jobs', current: false },
+    { name: 'Mentorship', href: '/mentorship', current: false },
 ]
 
 function classNames(...classes) {
@@ -15,8 +16,7 @@ function classNames(...classes) {
 export default function Header({user}) {
 
     const logout = (e) =>{
-        window.open("http://localhost:8000/auth/logout","_self")
-        e.preventDefault()
+        localStorage.clear();
     }
 
 
